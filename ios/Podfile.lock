@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - webview_media (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - webview_media (from `.symlinks/plugins/webview_media/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  webview_media:
+    :path: ".symlinks/plugins/webview_media/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  webview_media: 33604c2c1805f41bd0c6749c4d7de24b8cb4d81d
+
+PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
+
+COCOAPODS: 1.8.4

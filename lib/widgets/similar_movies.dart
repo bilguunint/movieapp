@@ -1,48 +1,65 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:movieapp/bloc/get_movies_bloc.dart';
-import 'package:movieapp/bloc/get_movies_byGenre_bloc.dart';
+import 'package:movieapp/bloc/get_movie_similar_bloc.dart';
 import 'package:movieapp/model/movie.dart';
 import 'package:movieapp/model/movie_response.dart';
-import 'package:movieapp/screens/detail_screen.dart';
 import 'package:movieapp/style/theme.dart' as Style;
 
-class GenreMovies extends StatefulWidget {
-  final int genreId;
-  GenreMovies({Key key, @required this.genreId})
-      : super(key: key);
+class SimilarMovies extends StatefulWidget {
+  final int id;
+  SimilarMovies({Key key, @required this.id}) : super(key: key);
   @override
-  _GenreMoviesState createState() => _GenreMoviesState(genreId);
+  _SimilarMoviesState createState() => _SimilarMoviesState(id);
 }
 
-class _GenreMoviesState extends State<GenreMovies> {
-  final int genreId;
-  _GenreMoviesState(this.genreId);
+class _SimilarMoviesState extends State<SimilarMovies> {
+  final int id;
+  _SimilarMoviesState(this.id);
   @override
   void initState() {
     super.initState();
-    moviesByGenreBloc..getMoviesByGenre(genreId);
+    similarMoviesBloc..getSimilarMovies(id);
   }
-
+  @override
+ void dispose() {
+   similarMoviesBloc..drainStream();
+   super.dispose();
+ }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<MovieResponse>(
-    stream: moviesByGenreBloc.subject.stream,
-    builder: (context, AsyncSnapshot<MovieResponse> snapshot) {
-      if (snapshot.hasData) {
-        if (snapshot.data.error != null && snapshot.data.error.length > 0) {
-          return _buildErrorWidget(snapshot.data.error);
-        }
-        return _buildHomeWidget(snapshot.data);
-      } else if (snapshot.hasError) {
-        return _buildErrorWidget(snapshot.error);
-      } else {
-        return _buildLoadingWidget();
-      }
-    },
-      );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0, top: 20.0),
+          child: Text("SIMILAR MOVIES", style: TextStyle(
+            color: Style.Colors.titleColor,
+            fontWeight: FontWeight.w500,
+            fontSize: 12.0
+          ),),
+        ),
+        SizedBox(
+          height: 5.0,
+        ),
+        StreamBuilder<MovieResponse>(
+        stream: similarMoviesBloc.subject.stream,
+        builder: (context, AsyncSnapshot<MovieResponse> snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data.error != null && snapshot.data.error.length > 0) {
+              return _buildErrorWidget(snapshot.data.error);
+            }
+            return _buildHomeWidget(snapshot.data);
+          } else if (snapshot.hasError) {
+            return _buildErrorWidget(snapshot.error);
+          } else {
+            return _buildLoadingWidget();
+          }
+        },
+      )
+      ],
+    );
   }
 
   Widget _buildLoadingWidget() {
@@ -110,44 +127,25 @@ class _GenreMoviesState extends State<GenreMovies> {
               ),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MovieDetailScreen(movie: movies[index]),
-                    ),
-                  );
+                  
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    movies[index].poster == null ?
-                    Container(
-                        width: 120.0,
-                        height: 180.0,
-                        decoration: new BoxDecoration(
-                          color: Style.Colors.secondColor,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(2.0)),
-                          shape: BoxShape.rectangle,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(EvaIcons.filmOutline, color: Colors.white, size: 60.0,)
-                          ],
-                        ),
-                        ):
-                    Container(
-                        width: 120.0,
-                        height: 180.0,
-                        decoration: new BoxDecoration(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(2.0)),
-                          shape: BoxShape.rectangle,
-                          image: new DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage("https://image.tmdb.org/t/p/w200/" + movies[index].poster)),
-                        )),
+                    Hero(
+                      tag: movies[index].id,
+                      child: Container(
+                          width: 120.0,
+                          height: 180.0,
+                          decoration: new BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(2.0)),
+                            shape: BoxShape.rectangle,
+                            image: new DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage("https://image.tmdb.org/t/p/w200/" + movies[index].poster)),
+                          )),
+                    ),
                     SizedBox(
                       height: 10.0,
                     ),
