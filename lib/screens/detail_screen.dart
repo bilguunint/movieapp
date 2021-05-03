@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -133,15 +132,25 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           RatingBar(
                             itemSize: 10.0,
                             initialRating: movie.rating / 2,
+                            ratingWidget: RatingWidget(
+                              empty: Icon(
+                                EvaIcons.star,
+                                color: Style.Colors.secondColor,
+                              ),
+                              full: Icon(
+                                EvaIcons.star,
+                                color: Style.Colors.secondColor,
+                              ),
+                              half: Icon(
+                                EvaIcons.star,
+                                color: Style.Colors.secondColor,
+                              ),
+                            ),
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
                             itemCount: 5,
                             itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                            itemBuilder: (context, _) => Icon(
-                              EvaIcons.star,
-                              color: Style.Colors.secondColor,
-                            ),
                             onRatingUpdate: (rating) {
                               print(rating);
                             },
@@ -173,7 +182,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    MovieInfo(id: movie.id,),
+                    MovieInfo(
+                      id: movie.id,
+                    ),
                     Casts(
                       id: movie.id,
                     ),

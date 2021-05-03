@@ -13,14 +13,17 @@ class MoviesListByGenreBloc {
     _subject.sink.add(response);
   }
 
-  void drainStream(){ _subject.value = null; }
+  void drainStream() async {
+    await _subject.drain();
+  }
+
   @mustCallSuper
-  void dispose() async{
+  void dispose() async {
     await _subject.drain();
     _subject.close();
   }
 
   BehaviorSubject<MovieResponse> get subject => _subject;
-  
 }
+
 final moviesByGenreBloc = MoviesListByGenreBloc();
