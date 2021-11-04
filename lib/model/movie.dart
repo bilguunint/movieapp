@@ -1,11 +1,11 @@
 class Movie {
   final int id;
-  final double popularity;
+  final num popularity;
   final String title;
   final String backPoster;
   final String poster;
   final String overview;
-  final double rating;
+  final num rating;
 
   Movie(this.id,
          this.popularity,

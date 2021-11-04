@@ -13,14 +13,17 @@ class MovieDetailBloc {
     _subject.sink.add(response);
   }
 
-  void drainStream(){ _subject.value = null; }
+  void drainStream() async {
+    await _subject.drain();
+  }
+
   @mustCallSuper
-  void dispose() async{
+  void dispose() async {
     await _subject.drain();
     _subject.close();
   }
 
   BehaviorSubject<MovieDetailResponse> get subject => _subject;
-  
 }
+
 final movieDetailBloc = MovieDetailBloc();
