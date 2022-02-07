@@ -1,5 +1,6 @@
 # Flutter Movie App
 
+<p align="left"> <img src="https://komarev.com/ghpvc/?username=bilguunint&label=Profile%20views&color=0e75b6&style=flat" alt="bilguunint" /> </p>
 Using BLoc Pattern and JSON API.
 Data Provider: https://www.themoviedb.org
 Youtube Tutorial Link: https://youtu.be/wfxA0f9rjzg
